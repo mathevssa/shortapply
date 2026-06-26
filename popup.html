@@ -83,6 +83,15 @@
         <input type="file" id="inst-file-input" accept=".md,text/markdown" hidden>
       </div>
 
+      <!-- System Prompt -->
+      <div class="card">
+        <div class="card-label-row">
+          <div class="card-label" data-i18n="systemPromptLabel">System prompt</div>
+          <button id="sp-reset-btn" class="inst-md-btn" data-i18n="systemPromptReset">reset</button>
+        </div>
+        <textarea id="sp-textarea" class="inst-textarea" rows="4"></textarea>
+      </div>
+
       <!-- History -->
       <div class="card" id="history-card" hidden>
         <div class="card-label" data-i18n="historyLabel">Histórico de candidaturas</div>

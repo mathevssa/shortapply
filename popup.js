@@ -49,6 +49,8 @@ let cvText     = '';
 let cvFileName = '';
 let instFileName = '';
 
+let spIsDefault = true;
+
 // ── API status pill ───────────────────────────────────
 function setApiPill(ok) {
   const pill = document.getElementById('api-pill');
@@ -85,9 +87,24 @@ function hideInstLoaded() {
   instTextarea.hidden = false;
 }
 
+// ── System prompt ─────────────────────────────────────
+const spTextarea = document.getElementById('sp-textarea');
+
+spTextarea.addEventListener('input', () => {
+  spTextarea.style.height = 'auto';
+  spTextarea.style.height = Math.min(spTextarea.scrollHeight, 200) + 'px';
+  spIsDefault = (spTextarea.value === t('systemPromptDefault'));
+});
+
+document.getElementById('sp-reset-btn').addEventListener('click', () => {
+  spTextarea.value = t('systemPromptDefault');
+  spIsDefault = true;
+  spTextarea.dispatchEvent(new Event('input'));
+});
+
 // ── Load saved state ──────────────────────────────────
 async function loadSaved() {
-  const data = await chrome.storage.local.get(['apiKey', 'cvText', 'cvFileName', 'extraInstructions', 'instFileName']);
+  const data = await chrome.storage.local.get(['apiKey', 'cvText', 'cvFileName', 'extraInstructions', 'instFileName', 'systemPrompt']);
 
   if (data.apiKey) {
     document.getElementById('api-key').value = data.apiKey;
@@ -107,6 +124,10 @@ async function loadSaved() {
     instFileName = data.instFileName;
     showInstLoaded(data.instFileName, t('charsLoaded', (data.extraInstructions || '').length.toLocaleString()));
   }
+
+  spIsDefault = !data.systemPrompt;
+  spTextarea.value = data.systemPrompt || t('systemPromptDefault');
+  spTextarea.dispatchEvent(new Event('input'));
 
   await loadHistory();
 }
@@ -131,6 +152,10 @@ document.getElementById('lang-toggle').addEventListener('click', async (e) => {
   setActiveLangBtn(locale);
   applyI18n();
   setApiPill(document.getElementById('api-key').value.trim().length > 0);
+  if (spIsDefault) {
+    spTextarea.value = t('systemPromptDefault');
+    spTextarea.dispatchEvent(new Event('input'));
+  }
   if (cvText) showCvLoaded(cvFileName, t('charsExtracted', cvText.length.toLocaleString()));
   if (instFileName) {
     const chars = document.getElementById('inst-textarea').value.length;
@@ -244,13 +269,15 @@ async function loadHistory() {
 
 // ── Save ──────────────────────────────────────────────
 document.getElementById('save-btn').addEventListener('click', async () => {
-  const apiKey           = document.getElementById('api-key').value.trim();
+  const apiKey            = document.getElementById('api-key').value.trim();
   const extraInstructions = instTextarea.value.trim() || null;
+  const systemPrompt      = spTextarea.value.trim();
 
   const toSave = {
     apiKey,
     extraInstructions: extraInstructions || null,
     instFileName: instFileName || null,
+    systemPrompt: spIsDefault ? null : (systemPrompt || null),
   };
   if (cvText) { toSave.cvText = cvText; toSave.cvFileName = cvFileName; }
 

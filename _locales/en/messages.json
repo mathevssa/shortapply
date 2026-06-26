@@ -19,6 +19,10 @@
   "dropSubCv":          { "message": "PDF up to 10 MB" },
   "removeTitle":        { "message": "Remove" },
 
+  "systemPromptLabel":   { "message": "System prompt" },
+  "systemPromptReset":   { "message": "restore default" },
+  "systemPromptDefault": { "message": "You are an assistant that fills job application forms. Use ONLY information from the provided CV. Reply directly with the field content — no explanations, no introductory phrases, no quotes. Be concise and direct." },
+
   "historyLabel":       { "message": "Application history" },
   "historyEmpty":       { "message": "No applications recorded yet" },
   "historyFields":      { "message": "{0} fields filled" },

@@ -19,6 +19,10 @@
   "dropSubCv":          { "message": "PDF hasta 10 MB" },
   "removeTitle":        { "message": "Eliminar" },
 
+  "systemPromptLabel":   { "message": "System prompt" },
+  "systemPromptReset":   { "message": "restaurar predeterminado" },
+  "systemPromptDefault": { "message": "Eres un asistente que rellena formularios de solicitud de empleo. Usa ÚNICAMENTE la información del CV proporcionado. Responde directamente con el contenido del campo — sin explicaciones, sin frases introductorias, sin comillas. Sé conciso y directo." },
+
   "historyLabel":       { "message": "Historial de candidaturas" },
   "historyEmpty":       { "message": "Ninguna candidatura registrada aún" },
   "historyFields":      { "message": "{0} campos rellenados" },
