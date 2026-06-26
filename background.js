@@ -1,9 +1,13 @@
 chrome.commands.onCommand.addListener(async (command) => {
   if (command !== 'trigger-fill' && command !== 'trigger-fill-single') return;
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (tab?.id) chrome.tabs.sendMessage(tab.id, {
-    type: command === 'trigger-fill' ? 'KEYBOARD_TRIGGER' : 'KEYBOARD_TRIGGER_SINGLE',
-  }).catch(() => {});
+  if (!tab?.id) return;
+
+  const msgType = command === 'trigger-fill' ? 'KEYBOARD_TRIGGER' : 'KEYBOARD_TRIGGER_SINGLE';
+  const frames = await chrome.webNavigation.getAllFrames({ tabId: tab.id }).catch(() => []);
+  for (const { frameId } of frames ?? []) {
+    chrome.tabs.sendMessage(tab.id, { type: msgType }, { frameId }).catch(() => {});
+  }
 });
 
 const API_HEADERS = (apiKey) => ({

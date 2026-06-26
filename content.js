@@ -12,13 +12,22 @@ const t = (key, ...args) => {
   return args.reduce((s, a, i) => s.replace(`{${i}}`, a), msg);
 };
 
-chrome.storage.local.get('lang').then(({ lang }) => {
-  const locale = lang || normalizeLocale(chrome.i18n.getUILanguage());
-  fetch(chrome.runtime.getURL(`_locales/${locale}/messages.json`))
-    .then(r => r.json())
-    .then(data => { _msgs = data; })
-    .catch(() => {});
-});
+const _localeReady = chrome.storage.local.get('lang')
+  .catch(() => ({}))
+  .then(({ lang }) => {
+    const locale = lang || normalizeLocale(chrome.i18n.getUILanguage());
+    return fetch(chrome.runtime.getURL(`_locales/${locale}/messages.json`))
+      .then(r => r.json())
+      .then(data => { _msgs = data; });
+  })
+  .catch(() =>
+    fetch(chrome.runtime.getURL('_locales/pt_BR/messages.json'))
+      .then(r => r.json())
+      .then(data => { _msgs = data; })
+      .catch(() => {})
+  );
+
+const IS_MAIN_FRAME = window.self === window.top;
 
 // ── Field validation ──────────────────────────────────
 let currentField = null;
@@ -93,15 +102,18 @@ function getNearbyText(el) {
 
 // ── Keyboard shortcuts ────────────────────────────────
 chrome.runtime.onMessage.addListener(msg => {
-  if (msg.type === 'KEYBOARD_TRIGGER' && !isFilling) {
-    triggerFillAll();
-  } else if (msg.type === 'KEYBOARD_TRIGGER_SINGLE' && !isFilling) {
-    const field = (currentField && document.contains(currentField))
-      ? currentField
-      : (isValidField(document.activeElement) ? document.activeElement : null);
-    if (field) triggerFill(field);
-    else showToast(t('toastClickFirst'));
-  }
+  if (msg.type !== 'KEYBOARD_TRIGGER' && msg.type !== 'KEYBOARD_TRIGGER_SINGLE') return;
+  _localeReady.then(() => {
+    if (msg.type === 'KEYBOARD_TRIGGER' && !isFilling) {
+      triggerFillAll();
+    } else if (msg.type === 'KEYBOARD_TRIGGER_SINGLE' && !isFilling) {
+      const field = (currentField && document.contains(currentField))
+        ? currentField
+        : (isValidField(document.activeElement) ? document.activeElement : null);
+      if (field) triggerFill(field);
+      else showToast(t('toastClickFirst'));
+    }
+  });
 });
 
 // ── Fill ALL fields ───────────────────────────────────
@@ -112,7 +124,7 @@ async function triggerFillAll() {
     document.querySelectorAll('input, textarea, select, [contenteditable="true"]')
   ).filter(el => isValidField(el) && isVisible(el));
 
-  if (!allFields.length) { showToast(t('toastNoFields')); return; }
+  if (!allFields.length) { if (IS_MAIN_FRAME) showToast(t('toastNoFields')); return; }
 
   const snapshots = allFields.map(el => ({
     el,
