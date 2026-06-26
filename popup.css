@@ -115,17 +115,6 @@ body {
   gap: 7px;
 }
 
-.badge {
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--muted-fg);
-  background: var(--page-bg);
-  border: 0.5px solid var(--border);
-  border-radius: 4px;
-  padding: 1px 6px;
-  letter-spacing: .02em;
-}
-
 /* ── Input ───────────────────────────────── */
 .input-wrap {
   position: relative;
@@ -375,16 +364,6 @@ body {
   cursor: pointer;
 }
 .shortcut-config-link:hover { color: var(--fg); }
-
-kbd {
-  font-family: inherit;
-  font-size: 10px;
-  background: var(--page-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 1px 5px;
-  color: var(--fg);
-}
 
 /* ── Instructions textarea ───────────────── */
 .inst-textarea {

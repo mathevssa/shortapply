@@ -110,6 +110,7 @@ function getNearbyText(el) {
 
 // ── Keyboard shortcuts ────────────────────────────────
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (!chrome.runtime?.id) { showToast('ShortApply — recarregue a página (F5)'); return; }
   if (msg.type !== 'KEYBOARD_TRIGGER' && msg.type !== 'KEYBOARD_TRIGGER_SINGLE') return;
   _localeReady.then(() => {
     if (msg.type === 'KEYBOARD_TRIGGER' && !isFilling) {
@@ -444,11 +445,5 @@ function showToast(msg, duration = 4000) {
   return toast;
 }
 
-function escHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;');
-}
+const _esc = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'};
+function escHtml(s) { return String(s).replace(/[&<>"']/g, c => _esc[c]); }

@@ -158,15 +158,6 @@
   flex-direction: column;
 }
 
-.jaa-loading {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 24px 0;
-}
-.jaa-loading span { font-size: 13px; color: #64748b; }
 
 .jaa-spinner {
   width: 22px;
@@ -201,13 +192,6 @@
   box-shadow: 0 0 0 3px rgba(0,0,0,.12);
 }
 
-.jaa-error {
-  color: #dc2626;
-  font-size: 13px;
-  text-align: center;
-  padding: 24px 0;
-  line-height: 1.5;
-}
 
 .jaa-footer {
   padding: 12px 20px 16px;
@@ -228,7 +212,6 @@
   transition: background .15s;
   font-family: inherit;
 }
-.jaa-btn:disabled { opacity: .4; cursor: not-allowed; }
 .jaa-btn-primary { background: #09090b; color: #fff; }
 .jaa-btn-primary:hover:not(:disabled) { background: #27272a; }
 .jaa-btn-secondary { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
@@ -245,7 +228,6 @@
   .jaa-textarea:focus { border-color: #09090b; }
   .jaa-btn-secondary { background: #27272a; color: #d4d4d8; border-color: #3f3f46; }
   .jaa-btn-secondary:hover { background: #3f3f46; }
-  .jaa-loading span { color: #a1a1aa; }
 }
 
 /* ── Field fill flash ────────────────────────────────── */

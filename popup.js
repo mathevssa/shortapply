@@ -41,11 +41,8 @@ function setActiveLangBtn(locale) {
   });
 }
 
-function escHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
+const _esc = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'};
+function escHtml(s) { return String(s).replace(/[&<>"']/g, c => _esc[c]); }
 
 // ── State ─────────────────────────────────────────────
 let cvText     = '';
@@ -60,18 +57,18 @@ function setApiPill(ok) {
 }
 
 // ── CV drop zone helpers ──────────────────────────────
-function showEmpty(prefix) {
-  document.getElementById(`${prefix}-empty`).hidden = false;
-  document.getElementById(`${prefix}-loaded`).hidden = true;
-  document.getElementById(`${prefix}-drop`).className = 'drop-zone';
+function showCvEmpty() {
+  document.getElementById('cv-empty').hidden = false;
+  document.getElementById('cv-loaded').hidden = true;
+  document.getElementById('cv-drop').className = 'drop-zone';
 }
 
-function showLoaded(prefix, name, meta, isError = false) {
-  document.getElementById(`${prefix}-empty`).hidden = true;
-  document.getElementById(`${prefix}-loaded`).hidden = false;
-  document.getElementById(`${prefix}-filename`).textContent = name;
-  document.getElementById(`${prefix}-status`).textContent = meta;
-  document.getElementById(`${prefix}-drop`).className = `drop-zone ${isError ? 'error' : 'loaded'}`;
+function showCvLoaded(name, meta, isError = false) {
+  document.getElementById('cv-empty').hidden = true;
+  document.getElementById('cv-loaded').hidden = false;
+  document.getElementById('cv-filename').textContent = name;
+  document.getElementById('cv-status').textContent = meta;
+  document.getElementById('cv-drop').className = `drop-zone ${isError ? 'error' : 'loaded'}`;
 }
 
 // ── Instructions strip helpers ────────────────────────
@@ -99,7 +96,7 @@ async function loadSaved() {
   if (data.cvText) {
     cvText = data.cvText;
     cvFileName = data.cvFileName || t('cvLoadedFallback');
-    showLoaded('cv', cvFileName, t('charsExtracted', data.cvText.length.toLocaleString()));
+    showCvLoaded(cvFileName, t('charsExtracted', data.cvText.length.toLocaleString()));
   }
   if (data.extraInstructions) {
     const ta = document.getElementById('inst-textarea');
@@ -134,7 +131,7 @@ document.getElementById('lang-toggle').addEventListener('click', async (e) => {
   setActiveLangBtn(locale);
   applyI18n();
   setApiPill(document.getElementById('api-key').value.trim().length > 0);
-  if (cvText) showLoaded('cv', cvFileName, t('charsExtracted', cvText.length.toLocaleString()));
+  if (cvText) showCvLoaded(cvFileName, t('charsExtracted', cvText.length.toLocaleString()));
   if (instFileName) {
     const chars = document.getElementById('inst-textarea').value.length;
     showInstLoaded(instFileName, t('charsLoaded', chars.toLocaleString()));
@@ -167,16 +164,16 @@ fileInput.addEventListener('change', (e) => {
 });
 document.getElementById('cv-clear').addEventListener('click', (e) => {
   e.stopPropagation();
-  showEmpty('cv');
+  showCvEmpty();
   cvText = ''; cvFileName = '';
 });
 
 async function processPdf(file) {
   if (!file.name.endsWith('.pdf')) {
-    showLoaded('cv', file.name, t('pdfInvalid'), true);
+    showCvLoaded(file.name, t('pdfInvalid'), true);
     return;
   }
-  showLoaded('cv', file.name, t('pdfExtracting'));
+  showCvLoaded(file.name, t('pdfExtracting'));
   try {
     pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdf.worker.min.js');
     const buffer = await file.arrayBuffer();
@@ -189,9 +186,9 @@ async function processPdf(file) {
     }
     cvText     = pages.join('\n\n').trim();
     cvFileName = file.name;
-    showLoaded('cv', file.name, t('pdfPages', cvText.length.toLocaleString(), pdf.numPages));
+    showCvLoaded(file.name, t('pdfPages', cvText.length.toLocaleString(), pdf.numPages));
   } catch (err) {
-    showLoaded('cv', file.name, t('pdfError', err.message), true);
+    showCvLoaded(file.name, t('pdfError', err.message), true);
   }
 }
 
