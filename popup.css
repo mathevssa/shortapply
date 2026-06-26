@@ -1,0 +1,387 @@
+:root {
+  --page-bg:     #f4f4f5;
+  --card-bg:     #ffffff;
+  --fg:          #09090b;
+  --muted-fg:    #71717a;
+  --border:      #e4e4e7;
+  --border-hov:  #c4c4c8;
+  --primary:     #09090b;
+  --primary-hov: #27272a;
+  --success:     #16a34a;
+  --success-bg:  #f0fdf4;
+  --success-bd:  #86efac;
+  --danger-bg:   #fef2f2;
+  --danger-bd:   #fecaca;
+  --danger-fg:   #991b1b;
+  --radius-card: 16px;
+  --radius:      10px;
+  --ring:        0 0 0 3px rgba(0,0,0,.10);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--page-bg);
+  width: 360px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ─────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 14px 16px 13px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-text { flex: 1; min-width: 0; }
+
+.lang-toggle {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.lang-btn {
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .03em;
+  padding: 3px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted-fg);
+  cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.lang-btn:hover { background: var(--page-bg); color: var(--fg); }
+.lang-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.header-logo-img {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
+.header-sub {
+  font-size: 11px;
+  color: var(--muted-fg);
+  margin-top: 1px;
+}
+
+/* ── Body ────────────────────────────────── */
+.body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Card ────────────────────────────────── */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+
+.card-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted-fg);
+}
+
+.card-label-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.badge {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted-fg);
+  background: var(--page-bg);
+  border: 0.5px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  letter-spacing: .02em;
+}
+
+/* ── Input ───────────────────────────────── */
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-left-icon {
+  position: absolute;
+  left: 10px;
+  width: 14px;
+  height: 14px;
+  color: var(--muted-fg);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 34px 7px 32px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--fg);
+  background: var(--page-bg);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+.input:focus {
+  background: var(--card-bg);
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+}
+.input::placeholder { color: #a1a1aa; }
+
+.input-icon-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--muted-fg);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  transition: color .15s, background .15s;
+}
+.input-icon-btn svg { width: 14px; height: 14px; }
+.input-icon-btn:hover { color: var(--fg); background: var(--page-bg); }
+
+.hint {
+  font-size: 11px;
+  color: var(--muted-fg);
+  line-height: 1.4;
+}
+.hint a { color: var(--primary); text-decoration: none; }
+.hint a:hover { text-decoration: underline; }
+
+/* ── Status pill ─────────────────────────── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  align-self: flex-start;
+}
+.status-pill.ok {
+  background: var(--success-bg);
+  border: 0.5px solid var(--success-bd);
+  color: var(--success);
+}
+.status-pill.missing {
+  background: var(--danger-bg);
+  border: 0.5px solid var(--danger-bd);
+  color: var(--danger-fg);
+}
+.pill-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-pill.ok     .pill-dot { background: var(--success); }
+.status-pill.missing .pill-dot { background: #ef4444; }
+
+/* ── Drop zone ───────────────────────────── */
+.drop-zone {
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  border: 1.5px dashed var(--border-hov);
+  background: var(--page-bg);
+  overflow: hidden;
+}
+.drop-zone:hover { border-color: var(--primary); background: #eef2ff; }
+.drop-zone.drag-over { border-color: var(--primary); background: #eef2ff; }
+.drop-zone.loaded {
+  border-style: solid;
+  border-color: var(--success-bd);
+  background: var(--success-bg);
+  cursor: default;
+}
+.drop-zone.error {
+  border-style: solid;
+  border-color: var(--danger-bd);
+  background: var(--danger-bg);
+}
+
+.drop-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 20px 16px;
+  pointer-events: none;
+}
+.drop-empty svg {
+  width: 22px;
+  height: 22px;
+  color: var(--muted-fg);
+  margin-bottom: 2px;
+}
+.drop-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.drop-sub {
+  font-size: 11px;
+  color: var(--muted-fg);
+}
+
+.drop-loaded {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+}
+.drop-loaded svg {
+  width: 20px;
+  height: 20px;
+  color: var(--success);
+  flex-shrink: 0;
+}
+.drop-loaded-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.drop-filename {
+  font-size: 12px;
+  font-weight: 500;
+  color: #15803d;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.drop-meta {
+  font-size: 11px;
+  color: var(--success);
+}
+.drop-zone.error .drop-loaded svg  { color: #ef4444; }
+.drop-zone.error .drop-filename    { color: #991b1b; }
+.drop-zone.error .drop-meta        { color: #dc2626; }
+
+.drop-clear {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--success);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background .15s;
+}
+.drop-clear svg { width: 11px; height: 11px; }
+.drop-clear:hover { background: rgba(0,0,0,.07); }
+.drop-zone.error .drop-clear { color: #dc2626; }
+
+/* ── Footer ──────────────────────────────── */
+.footer {
+  padding: 0 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  height: 40px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s, box-shadow .15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.btn-primary:hover { box-shadow: 0 4px 14px rgba(0,0,0,.35); }
+.btn-primary svg { width: 15px; height: 15px; }
+.btn-primary:hover { background: var(--primary-hov); }
+
+.save-msg {
+  font-size: 12px;
+  color: var(--success);
+  text-align: center;
+  min-height: 14px;
+}
+
+.shortcut-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 0 2px;
+  border-top: 1px solid var(--border);
+}
+
+.shortcut-hint {
+  font-size: 11px;
+  color: var(--muted-fg);
+  text-align: center;
+}
+
+.shortcut-config-link {
+  font-size: 11px;
+  color: var(--muted-fg);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.shortcut-config-link:hover { color: var(--fg); }
+
+kbd {
+  font-family: inherit;
+  font-size: 10px;
+  background: var(--page-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--fg);
+}

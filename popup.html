@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>ShortApply</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+
+    <header class="header">
+      <div class="header-text">
+        <img src="brand/Black-H.svg" class="header-logo-img" alt="ShortApply">
+        <p class="header-sub" data-i18n="headerSub">Preencha candidaturas com IA</p>
+      </div>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn" data-lang="pt_BR">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="es">ES</button>
+      </div>
+    </header>
+
+    <div class="body">
+
+      <!-- API Key -->
+      <div class="card">
+        <div class="card-label-row">
+          <div class="card-label" data-i18n="apiKeyLabel">Chave da API Anthropic</div>
+          <div id="api-pill" class="status-pill missing">
+            <span class="pill-dot"></span><span id="api-pill-text" data-i18n="apiStatusMissing">Não configurada</span>
+          </div>
+        </div>
+        <div class="input-wrap">
+          <svg class="input-left-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="17" r="3"/><path d="M10.5 13.5 21 3"/><path d="M15 3h3v3"/></svg>
+          <input type="password" id="api-key" class="input" data-i18n-placeholder="apiKeyPlaceholder" placeholder="sk-ant-api03-…" autocomplete="off">
+          <button class="input-icon-btn" id="toggle-key" data-i18n-title="toggleKeyTitle" title="Mostrar/ocultar" tabindex="-1">
+            <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <p class="hint"><a href="https://console.anthropic.com" target="_blank" data-i18n="apiKeyHint">Obtenha em console.anthropic.com · ~$0.001/campo</a></p>
+      </div>
+
+      <!-- CV -->
+      <div class="card">
+        <div class="card-label" data-i18n="cvLabel">Currículo</div>
+        <div class="drop-zone" id="cv-drop">
+          <div id="cv-empty" class="drop-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="drop-title" data-i18n="dropTitle">Arraste ou clique para selecionar</span>
+            <span class="drop-sub" data-i18n="dropSubCv">PDF até 10 MB</span>
+          </div>
+          <div id="cv-loaded" class="drop-loaded" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg>
+            <div class="drop-loaded-info">
+              <span id="cv-filename" class="drop-filename"></span>
+              <span id="cv-status" class="drop-meta"></span>
+            </div>
+            <button class="drop-clear" id="cv-clear" data-i18n-title="removeTitle" title="Remover">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+        <input type="file" id="file-input" accept=".pdf" hidden>
+      </div>
+
+      <!-- Instructions -->
+      <div class="card">
+        <div class="card-label-row">
+          <div class="card-label" data-i18n="instLabel">Instruções adicionais</div>
+          <span class="badge">.md</span>
+        </div>
+        <div class="drop-zone" id="inst-drop">
+          <div id="inst-empty" class="drop-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="drop-title" data-i18n="dropTitle">Arraste ou clique para selecionar</span>
+            <span class="drop-sub" data-i18n="dropSubInst">Arquivo Markdown</span>
+          </div>
+          <div id="inst-loaded" class="drop-loaded" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg>
+            <div class="drop-loaded-info">
+              <span id="inst-filename" class="drop-filename"></span>
+              <span id="inst-status" class="drop-meta"></span>
+            </div>
+            <button class="drop-clear" id="inst-clear" data-i18n-title="removeTitle" title="Remover">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+        <input type="file" id="inst-file-input" accept=".md,text/markdown" hidden>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <button class="btn-primary" id="save-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span data-i18n="saveBtn">Salvar configurações</span>
+      </button>
+      <p class="save-msg" id="save-msg"></p>
+      <div class="shortcut-block">
+        <p class="shortcut-hint" data-i18n="shortcutHint">⌘⇧F todos os campos · ⌘⇧U campo focado</p>
+        <a class="shortcut-config-link" id="shortcuts-link" data-i18n="shortcutsLink">Atalho não funciona? Configurar aqui</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="lib/pdf.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

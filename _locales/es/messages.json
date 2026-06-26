@@ -1,0 +1,55 @@
+{
+  "extDescription":     { "message": "Completa solicitudes de empleo con IA — más rápido." },
+  "headerSub":          { "message": "Completa solicitudes de empleo con IA" },
+
+  "apiKeyLabel":        { "message": "Clave de API de Anthropic" },
+  "apiKeyHint":         { "message": "Obtén en console.anthropic.com · ~$0.001/campo" },
+  "apiKeyPlaceholder":  { "message": "sk-ant-api03-…" },
+  "toggleKeyTitle":     { "message": "Mostrar/ocultar" },
+  "apiStatusOk":        { "message": "Configurada" },
+  "apiStatusMissing":   { "message": "No configurada" },
+
+  "cvLabel":            { "message": "Currículum" },
+  "instLabel":          { "message": "Instrucciones adicionales" },
+  "dropTitle":          { "message": "Arrastra o haz clic para seleccionar" },
+  "dropSubCv":          { "message": "PDF hasta 10 MB" },
+  "dropSubInst":        { "message": "Archivo Markdown" },
+  "removeTitle":        { "message": "Eliminar" },
+
+  "saveBtn":            { "message": "Guardar configuración" },
+  "savedMsg":           { "message": "✓ Configuración guardada" },
+  "shortcutHint":       { "message": "⌘⇧F todos los campos · ⌘⇧U campo enfocado" },
+  "shortcutsLink":      { "message": "¿Atajo no funciona? Configurar aquí" },
+
+  "cvLoadedFallback":   { "message": "CV cargado" },
+  "charsExtracted":     { "message": "{0} chars extraídos" },
+  "charsLoaded":        { "message": "{0} chars cargados" },
+  "pdfPages":           { "message": "{0} chars · {1}p" },
+  "pdfInvalid":         { "message": "Selecciona un archivo PDF" },
+  "pdfExtracting":      { "message": "Extrayendo texto…" },
+  "pdfError":           { "message": "Error: {0}" },
+  "instInvalid":        { "message": "Selecciona un archivo .md" },
+  "instReading":        { "message": "Leyendo archivo…" },
+  "instReadError":      { "message": "Error al leer el archivo" },
+
+  "btnTitle":           { "message": "Completar con IA (⌘⇧F)" },
+  "toastReload":        { "message": "Extensión recargada — actualiza la página (F5)" },
+  "toastNoFields":      { "message": "No se encontraron campos en esta página" },
+  "toastConfigure":     { "message": "Configura la extensión: haz clic en el ícono ✦ en la barra de Chrome" },
+  "toastFilling":       { "message": "✦ Completando {0} campos…" },
+  "toastClickFirst":    { "message": "Haz clic en un campo de texto primero" },
+  "toastNoOption":      { "message": "Opción no encontrada: \"{0}\"" },
+  "toastError":         { "message": "Error: {0}" },
+  "toastNoResponse":    { "message": "Sin respuesta. Actualiza la página (F5)." },
+  "toastSkipped":       { "message": "No completados: {0}" },
+
+  "barFilledOnly":      { "message": "{0} campos completados" },
+  "barFilledSkipped":   { "message": "{0} campos completados · {1} sin respuesta" },
+  "barUndoAll":         { "message": "Deshacer todo" },
+  "barUndo":            { "message": "Deshacer" },
+  "barEdit":            { "message": "Editar" },
+
+  "modalAnsweringLabel":{ "message": "Respondiendo a:" },
+  "modalCancel":        { "message": "Cancelar" },
+  "modalInsert":        { "message": "Insertar" }
+}

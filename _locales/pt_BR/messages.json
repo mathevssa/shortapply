@@ -1,0 +1,55 @@
+{
+  "extDescription":     { "message": "Preencha candidaturas com IA — mais rápido." },
+  "headerSub":          { "message": "Preencha candidaturas com IA" },
+
+  "apiKeyLabel":        { "message": "Chave da API Anthropic" },
+  "apiKeyHint":         { "message": "Obtenha em console.anthropic.com · ~$0.001/campo" },
+  "apiKeyPlaceholder":  { "message": "sk-ant-api03-…" },
+  "toggleKeyTitle":     { "message": "Mostrar/ocultar" },
+  "apiStatusOk":        { "message": "Configurada" },
+  "apiStatusMissing":   { "message": "Não configurada" },
+
+  "cvLabel":            { "message": "Currículo" },
+  "instLabel":          { "message": "Instruções adicionais" },
+  "dropTitle":          { "message": "Arraste ou clique para selecionar" },
+  "dropSubCv":          { "message": "PDF até 10 MB" },
+  "dropSubInst":        { "message": "Arquivo Markdown" },
+  "removeTitle":        { "message": "Remover" },
+
+  "saveBtn":            { "message": "Salvar configurações" },
+  "savedMsg":           { "message": "✓ Configurações salvas" },
+  "shortcutHint":       { "message": "⌘⇧F todos os campos · ⌘⇧U campo focado" },
+  "shortcutsLink":      { "message": "Atalho não funciona? Configurar aqui" },
+
+  "cvLoadedFallback":   { "message": "CV carregado" },
+  "charsExtracted":     { "message": "{0} chars extraídos" },
+  "charsLoaded":        { "message": "{0} chars carregados" },
+  "pdfPages":           { "message": "{0} chars · {1}p" },
+  "pdfInvalid":         { "message": "Selecione um arquivo PDF" },
+  "pdfExtracting":      { "message": "Extraindo texto…" },
+  "pdfError":           { "message": "Erro: {0}" },
+  "instInvalid":        { "message": "Selecione um arquivo .md" },
+  "instReading":        { "message": "Lendo arquivo…" },
+  "instReadError":      { "message": "Erro ao ler arquivo" },
+
+  "btnTitle":           { "message": "Preencher com IA (⌘⇧F)" },
+  "toastReload":        { "message": "Extensão recarregada — atualize a página (F5)" },
+  "toastNoFields":      { "message": "Nenhum campo encontrado na página" },
+  "toastConfigure":     { "message": "Configure a extensão: clique no ícone ✦ na barra do Chrome" },
+  "toastFilling":       { "message": "✦ Preenchendo {0} campos…" },
+  "toastClickFirst":    { "message": "Clique no campo antes de acionar" },
+  "toastNoOption":      { "message": "Nenhuma opção encontrada: \"{0}\"" },
+  "toastError":         { "message": "Erro: {0}" },
+  "toastNoResponse":    { "message": "Sem resposta. Recarregue a página (F5)." },
+  "toastSkipped":       { "message": "Não preenchidos: {0}" },
+
+  "barFilledOnly":      { "message": "{0} campos preenchidos" },
+  "barFilledSkipped":   { "message": "{0} campos preenchidos · {1} não respondidos" },
+  "barUndoAll":         { "message": "Desfazer tudo" },
+  "barUndo":            { "message": "Desfazer" },
+  "barEdit":            { "message": "Editar" },
+
+  "modalAnsweringLabel":{ "message": "Respondendo a:" },
+  "modalCancel":        { "message": "Cancelar" },
+  "modalInsert":        { "message": "Inserir" }
+}

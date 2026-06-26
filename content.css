@@ -1,0 +1,280 @@
+/* ── Confirm bar (Optimistic UI) ─────────────────────── */
+.jaa-confirm-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2147483647;
+  background: #18181b;
+  color: #fafafa;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px 13px;
+  min-width: 340px;
+  max-width: 580px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+  animation: jaa-slidein .22s cubic-bezier(.16,1,.3,1);
+}
+@keyframes jaa-slidein {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.jaa-confirm-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.jaa-confirm-star {
+  font-size: 13px;
+  color: #a1a1aa;
+  flex-shrink: 0;
+}
+
+.jaa-confirm-label {
+  font-size: 12px;
+  color: #a1a1aa;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jaa-confirm-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.jaa-cbar-btn {
+  padding: 5px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s;
+  border: none;
+}
+
+.jaa-cbar-edit {
+  background: #09090b;
+  color: #fff;
+}
+.jaa-cbar-edit:hover { background: #27272a; }
+
+.jaa-cbar-undo {
+  background: rgba(255,255,255,.08);
+  color: #a1a1aa;
+  border: 1px solid rgba(255,255,255,.1) !important;
+}
+.jaa-cbar-undo:hover { background: rgba(255,255,255,.14); color: #fafafa; }
+
+.jaa-confirm-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: #09090b;
+  transform-origin: left;
+  animation: jaa-drain 8s linear forwards;
+}
+@keyframes jaa-drain {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* ── Overlay / Modal ─────────────────────────────────── */
+.jaa-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 2147483646;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+}
+
+.jaa-card {
+  background: #fff;
+  border-radius: 14px;
+  width: 660px;
+  max-width: calc(100vw - 32px);
+  max-height: 88vh;
+  box-shadow: 0 8px 32px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #09090b;
+  border: 1px solid rgba(0,0,0,.08);
+  animation: jaa-fadein .18s ease;
+}
+
+.jaa-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.jaa-question-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.jaa-question-text {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.55;
+  max-height: 88px;
+  overflow-y: auto;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 9px 11px;
+}
+
+.jaa-body {
+  padding: 16px 20px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.jaa-loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px 0;
+}
+.jaa-loading span { font-size: 13px; color: #64748b; }
+
+.jaa-spinner {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid #e0e7ff;
+  border-top-color: #09090b;
+  border-radius: 50%;
+  animation: jaa-spin .7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes jaa-spin { to { transform: rotate(360deg); } }
+
+.jaa-textarea {
+  width: 100%;
+  flex: 1;
+  min-height: 200px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.65;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+  outline: none;
+  color: #09090b;
+  background: #fff;
+  transition: border-color .15s, box-shadow .15s;
+}
+.jaa-textarea:focus {
+  border-color: #09090b;
+  box-shadow: 0 0 0 3px rgba(0,0,0,.12);
+}
+
+.jaa-error {
+  color: #dc2626;
+  font-size: 13px;
+  text-align: center;
+  padding: 24px 0;
+  line-height: 1.5;
+}
+
+.jaa-footer {
+  padding: 12px 20px 16px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  border-top: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.jaa-btn {
+  padding: 8px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s;
+  font-family: inherit;
+}
+.jaa-btn:disabled { opacity: .4; cursor: not-allowed; }
+.jaa-btn-primary { background: #09090b; color: #fff; }
+.jaa-btn-primary:hover:not(:disabled) { background: #27272a; }
+.jaa-btn-secondary { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+.jaa-btn-secondary:hover { background: #e8edf2; }
+
+/* ── Dark mode ───────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .jaa-card { background: #18181b; color: #fafafa; border-color: rgba(255,255,255,.08); }
+  .jaa-header { border-bottom-color: #27272a; }
+  .jaa-question-label { color: #71717a; }
+  .jaa-question-text { background: #27272a; border-color: #3f3f46; color: #d4d4d8; }
+  .jaa-footer { border-top-color: #27272a; }
+  .jaa-textarea { background: #27272a; color: #fafafa; border-color: #3f3f46; }
+  .jaa-textarea:focus { border-color: #09090b; }
+  .jaa-btn-secondary { background: #27272a; color: #d4d4d8; border-color: #3f3f46; }
+  .jaa-btn-secondary:hover { background: #3f3f46; }
+  .jaa-loading span { color: #a1a1aa; }
+}
+
+/* ── Field fill flash ────────────────────────────────── */
+.jaa-filled-flash {
+  animation: jaa-field-flash 1s ease forwards !important;
+}
+@keyframes jaa-field-flash {
+  0%   { box-shadow: 0 0 0 2px #22c55e; }
+  70%  { box-shadow: 0 0 0 2px #22c55e; }
+  100% { box-shadow: none; }
+}
+
+/* ── Toast ───────────────────────────────────────────── */
+.jaa-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #18181b;
+  color: #fafafa;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  z-index: 2147483647;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  animation: jaa-fadein .2s ease;
+  max-width: 320px;
+}
+@keyframes jaa-fadein {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
