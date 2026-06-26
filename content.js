@@ -51,12 +51,15 @@ function isVisible(el) {
   return r.width > 0 && r.height > 0 && getComputedStyle(el).display !== 'none';
 }
 
-// Track last focused valid field — kept after blur so shortcuts work
 document.addEventListener('focusin', e => {
   if (isValidField(e.target)) currentField = e.target;
 });
 
 // ── Context extraction ────────────────────────────────
+function getPageLanguage() {
+  return document.documentElement.lang?.split('-')[0]?.toLowerCase() || '';
+}
+
 function getFieldContext(el) {
   let label = '';
   if (el.id) {
@@ -81,7 +84,12 @@ function getFieldContext(el) {
     ? Array.from(el.options).filter(o => o.value).map(o => o.text.trim())
     : null;
 
-  return { label: label.slice(0, 400), pageContext: pageContext.slice(0, 300), options };
+  return {
+    label: label.slice(0, 400),
+    pageContext: pageContext.slice(0, 300),
+    pageLanguage: getPageLanguage(),
+    options,
+  };
 }
 
 function getNearbyText(el) {
@@ -101,7 +109,7 @@ function getNearbyText(el) {
 }
 
 // ── Keyboard shortcuts ────────────────────────────────
-chrome.runtime.onMessage.addListener(msg => {
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type !== 'KEYBOARD_TRIGGER' && msg.type !== 'KEYBOARD_TRIGGER_SINGLE') return;
   _localeReady.then(() => {
     if (msg.type === 'KEYBOARD_TRIGGER' && !isFilling) {
@@ -136,7 +144,10 @@ async function triggerFillAll() {
   const fields = allFields.map((el, i) => ({ id: i, ...getFieldContext(el) }));
 
   isFilling = true;
-  const loadingToast = showToast(t('toastFilling', fields.length), 0);
+  const overlay = document.createElement('div');
+  overlay.className = 'jaa-fill-overlay';
+  overlay.innerHTML = `<div class="jaa-fill-overlay-card"><div class="jaa-spinner"></div><span>${escHtml(t('toastFilling', fields.length))}</span></div>`;
+  document.body.appendChild(overlay);
 
   try {
     const response = await new Promise((resolve, reject) =>
@@ -152,6 +163,7 @@ async function triggerFillAll() {
 
     let filled = 0;
     const skipped = [];
+    const details = [];
 
     for (const { id, answer } of response.results) {
       if (typeof id !== 'number' || id < 0 || id >= allFields.length) continue;
@@ -159,11 +171,20 @@ async function triggerFillAll() {
         skipped.push(fields[id]?.label || `campo ${id}`);
         continue;
       }
+      const fieldLabel = fields[id]?.label || `campo ${id}`;
+      const displayVal = fields[id]?.options
+        ? (() => {
+            const num = parseInt(answer, 10);
+            const opts = Array.from(allFields[id].options || []).filter(o => o.value);
+            return (!isNaN(num) && opts[num - 1]) ? opts[num - 1].text.trim() : answer;
+          })()
+        : answer;
       insertText(allFields[id], String(answer), true);
+      details.push({ label: fieldLabel, value: displayVal });
       filled++;
     }
 
-    showBulkConfirmBar(filled, skipped, () => {
+    showBulkConfirmBar(filled, skipped, details, () => {
       for (const { el, original } of snapshots) insertText(el, original);
     });
 
@@ -171,14 +192,33 @@ async function triggerFillAll() {
       setTimeout(() => showToast(t('toastSkipped', skipped.join(', ')), 8000), 300);
     }
 
+    // Feature 5: save application history
+    if (filled > 0 && IS_MAIN_FRAME) saveHistory(filled);
+
   } catch (err) {
-    const msg = err.message.includes('context') || err.message.includes('Extension')
+    const errMsg = err.message.includes('context') || err.message.includes('Extension')
       ? t('toastReload') : err.message;
-    showToast(t('toastError', msg));
+    showToast(t('toastError', errMsg));
   } finally {
     isFilling = false;
-    loadingToast.remove();
+    overlay.remove();
   }
+}
+
+// ── Save application history ──────────────────────────
+async function saveHistory(count) {
+  try {
+    const { appHistory = [] } = await chrome.storage.local.get('appHistory');
+    const entry = {
+      domain: location.hostname,
+      title: document.title.slice(0, 80),
+      date: new Date().toISOString(),
+      count,
+    };
+    // keep last 50 entries, newest first
+    const updated = [entry, ...appHistory].slice(0, 50);
+    await chrome.storage.local.set({ appHistory: updated });
+  } catch { /* storage errors are non-fatal */ }
 }
 
 // ── Fill single field ─────────────────────────────────
@@ -220,9 +260,9 @@ async function triggerFill(el) {
     showConfirmBar(fieldContext, originalValue, el, displayText);
 
   } catch (err) {
-    const msg = err.message.includes('context') || err.message.includes('Extension')
+    const errMsg = err.message.includes('context') || err.message.includes('Extension')
       ? t('toastReload') : err.message;
-    showToast(t('toastError', msg));
+    showToast(t('toastError', errMsg));
   } finally {
     isFilling = false;
     loadingToast.remove();
@@ -265,24 +305,35 @@ function showConfirmBar(fieldContext, originalValue, targetEl, displayText) {
 }
 
 // ── Confirm bar (bulk fill) ───────────────────────────
-function showBulkConfirmBar(filled, skipped, undoFn) {
+function showBulkConfirmBar(filled, skipped, details, undoFn) {
   document.querySelector('.jaa-confirm-bar')?.remove();
 
   const bar = document.createElement('div');
-  bar.className = 'jaa-confirm-bar';
+  bar.className = 'jaa-confirm-bar jaa-confirm-bar--bulk';
 
   const summary = skipped.length
     ? t('barFilledSkipped', filled, skipped.length)
     : t('barFilledOnly', filled);
 
+  const detailRows = details.map(d =>
+    `<div class="jaa-cbar-detail-row">
+      <span class="jaa-cbar-detail-label">${escHtml(d.label)}</span>
+      <span class="jaa-cbar-detail-value">${escHtml(String(d.value).slice(0, 80))}</span>
+    </div>`
+  ).join('');
+
   bar.innerHTML = `
-    <div class="jaa-confirm-info">
-      <span class="jaa-confirm-star">✦</span>
-      <span class="jaa-confirm-label">${escHtml(summary)}</span>
+    <div class="jaa-cbar-main">
+      <div class="jaa-confirm-info">
+        <span class="jaa-confirm-star">✦</span>
+        <span class="jaa-confirm-label">${escHtml(summary)}</span>
+        ${details.length ? `<button class="jaa-cbar-toggle">${t('barSeeDetails')}</button>` : ''}
+      </div>
+      <div class="jaa-confirm-actions">
+        <button class="jaa-cbar-btn jaa-cbar-undo">${t('barUndoAll')}</button>
+      </div>
     </div>
-    <div class="jaa-confirm-actions">
-      <button class="jaa-cbar-btn jaa-cbar-undo">${t('barUndoAll')}</button>
-    </div>
+    ${details.length ? `<div class="jaa-cbar-details" hidden>${detailRows}</div>` : ''}
     <div class="jaa-confirm-progress" style="animation-duration:20s"></div>
   `;
 
@@ -292,6 +343,16 @@ function showBulkConfirmBar(filled, skipped, undoFn) {
   bar.querySelector('.jaa-cbar-undo').addEventListener('click', () => {
     clearTimeout(timer); undoFn(); bar.remove();
   });
+
+  if (details.length) {
+    const toggle = bar.querySelector('.jaa-cbar-toggle');
+    const detailsEl = bar.querySelector('.jaa-cbar-details');
+    toggle.addEventListener('click', () => {
+      const open = !detailsEl.hidden;
+      detailsEl.hidden = open;
+      toggle.textContent = open ? t('barSeeDetails') : t('barHideDetails');
+    });
+  }
 }
 
 // ── Edit modal ────────────────────────────────────────
@@ -384,7 +445,7 @@ function showToast(msg, duration = 4000) {
 }
 
 function escHtml(s) {
-  return s
+  return String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')

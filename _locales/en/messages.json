@@ -1,6 +1,6 @@
 {
   "extDescription":     { "message": "Fill job applications with AI — faster." },
-  "headerSub":          { "message": "Fill job applications with AI" },
+  "headerSub":          { "message": "Fill applications with AI" },
 
   "apiKeyLabel":        { "message": "Anthropic API Key" },
   "apiKeyHint":         { "message": "Get it at console.anthropic.com · ~$0.001/field" },
@@ -10,11 +10,18 @@
   "apiStatusMissing":   { "message": "Not configured" },
 
   "cvLabel":            { "message": "Resume" },
+
   "instLabel":          { "message": "Additional instructions" },
+  "instPlaceholder":    { "message": "e.g. prefer English responses, salary expectation $80k, available immediately…" },
+  "instMdBtn":          { "message": "import .md" },
+
   "dropTitle":          { "message": "Drag or click to select" },
   "dropSubCv":          { "message": "PDF up to 10 MB" },
-  "dropSubInst":        { "message": "Markdown file" },
   "removeTitle":        { "message": "Remove" },
+
+  "historyLabel":       { "message": "Application history" },
+  "historyEmpty":       { "message": "No applications recorded yet" },
+  "historyFields":      { "message": "{0} fields filled" },
 
   "saveBtn":            { "message": "Save settings" },
   "savedMsg":           { "message": "✓ Settings saved" },
@@ -28,23 +35,22 @@
   "pdfInvalid":         { "message": "Please select a PDF file" },
   "pdfExtracting":      { "message": "Extracting text…" },
   "pdfError":           { "message": "Error: {0}" },
-  "instInvalid":        { "message": "Please select a .md file" },
-  "instReading":        { "message": "Reading file…" },
-  "instReadError":      { "message": "Error reading file" },
 
   "btnTitle":           { "message": "Fill with AI (⌘⇧F)" },
   "toastReload":        { "message": "Extension reloaded — refresh the page (F5)" },
   "toastNoFields":      { "message": "No fields found on this page" },
-  "toastConfigure":     { "message": "Configure the extension: click the ✦ icon in the Chrome toolbar" },
+  "toastConfigure":     { "message": "Configure the extension: click the ✦ icon in Chrome's toolbar" },
   "toastFilling":       { "message": "✦ Filling {0} fields…" },
-  "toastClickFirst":    { "message": "Click a text field first" },
+  "toastClickFirst":    { "message": "Click a field before triggering" },
   "toastNoOption":      { "message": "No option found: \"{0}\"" },
   "toastError":         { "message": "Error: {0}" },
-  "toastNoResponse":    { "message": "No response. Refresh the page (F5)." },
+  "toastNoResponse":    { "message": "No response. Reload the page (F5)." },
   "toastSkipped":       { "message": "Not filled: {0}" },
 
   "barFilledOnly":      { "message": "{0} fields filled" },
-  "barFilledSkipped":   { "message": "{0} fields filled · {1} not answered" },
+  "barFilledSkipped":   { "message": "{0} filled · {1} without answer" },
+  "barSeeDetails":      { "message": "see details" },
+  "barHideDetails":     { "message": "hide" },
   "barUndoAll":         { "message": "Undo all" },
   "barUndo":            { "message": "Undo" },
   "barEdit":            { "message": "Edit" },

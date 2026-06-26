@@ -10,11 +10,18 @@
   "apiStatusMissing":   { "message": "Não configurada" },
 
   "cvLabel":            { "message": "Currículo" },
+
   "instLabel":          { "message": "Instruções adicionais" },
+  "instPlaceholder":    { "message": "Ex: prefiro respostas em inglês, pretensão R$ 8.000, disponibilidade imediata…" },
+  "instMdBtn":          { "message": "importar .md" },
+
   "dropTitle":          { "message": "Arraste ou clique para selecionar" },
   "dropSubCv":          { "message": "PDF até 10 MB" },
-  "dropSubInst":        { "message": "Arquivo Markdown" },
   "removeTitle":        { "message": "Remover" },
+
+  "historyLabel":       { "message": "Histórico de candidaturas" },
+  "historyEmpty":       { "message": "Nenhuma candidatura registrada ainda" },
+  "historyFields":      { "message": "{0} campos preenchidos" },
 
   "saveBtn":            { "message": "Salvar configurações" },
   "savedMsg":           { "message": "✓ Configurações salvas" },
@@ -28,9 +35,6 @@
   "pdfInvalid":         { "message": "Selecione um arquivo PDF" },
   "pdfExtracting":      { "message": "Extraindo texto…" },
   "pdfError":           { "message": "Erro: {0}" },
-  "instInvalid":        { "message": "Selecione um arquivo .md" },
-  "instReading":        { "message": "Lendo arquivo…" },
-  "instReadError":      { "message": "Erro ao ler arquivo" },
 
   "btnTitle":           { "message": "Preencher com IA (⌘⇧F)" },
   "toastReload":        { "message": "Extensão recarregada — atualize a página (F5)" },
@@ -44,7 +48,9 @@
   "toastSkipped":       { "message": "Não preenchidos: {0}" },
 
   "barFilledOnly":      { "message": "{0} campos preenchidos" },
-  "barFilledSkipped":   { "message": "{0} campos preenchidos · {1} não respondidos" },
+  "barFilledSkipped":   { "message": "{0} preenchidos · {1} sem resposta" },
+  "barSeeDetails":      { "message": "ver detalhes" },
+  "barHideDetails":     { "message": "ocultar" },
   "barUndoAll":         { "message": "Desfazer tudo" },
   "barUndo":            { "message": "Desfazer" },
   "barEdit":            { "message": "Editar" },

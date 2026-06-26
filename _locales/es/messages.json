@@ -10,11 +10,18 @@
   "apiStatusMissing":   { "message": "No configurada" },
 
   "cvLabel":            { "message": "Currículum" },
+
   "instLabel":          { "message": "Instrucciones adicionales" },
+  "instPlaceholder":    { "message": "Ej: prefiero respuestas en español, pretensión $80k, disponibilidad inmediata…" },
+  "instMdBtn":          { "message": "importar .md" },
+
   "dropTitle":          { "message": "Arrastra o haz clic para seleccionar" },
   "dropSubCv":          { "message": "PDF hasta 10 MB" },
-  "dropSubInst":        { "message": "Archivo Markdown" },
   "removeTitle":        { "message": "Eliminar" },
+
+  "historyLabel":       { "message": "Historial de candidaturas" },
+  "historyEmpty":       { "message": "Ninguna candidatura registrada aún" },
+  "historyFields":      { "message": "{0} campos rellenados" },
 
   "saveBtn":            { "message": "Guardar configuración" },
   "savedMsg":           { "message": "✓ Configuración guardada" },
@@ -28,9 +35,6 @@
   "pdfInvalid":         { "message": "Selecciona un archivo PDF" },
   "pdfExtracting":      { "message": "Extrayendo texto…" },
   "pdfError":           { "message": "Error: {0}" },
-  "instInvalid":        { "message": "Selecciona un archivo .md" },
-  "instReading":        { "message": "Leyendo archivo…" },
-  "instReadError":      { "message": "Error al leer el archivo" },
 
   "btnTitle":           { "message": "Completar con IA (⌘⇧F)" },
   "toastReload":        { "message": "Extensión recargada — actualiza la página (F5)" },
@@ -44,7 +48,9 @@
   "toastSkipped":       { "message": "No completados: {0}" },
 
   "barFilledOnly":      { "message": "{0} campos completados" },
-  "barFilledSkipped":   { "message": "{0} campos completados · {1} sin respuesta" },
+  "barFilledSkipped":   { "message": "{0} completados · {1} sin respuesta" },
+  "barSeeDetails":      { "message": "ver detalles" },
+  "barHideDetails":     { "message": "ocultar" },
   "barUndoAll":         { "message": "Deshacer todo" },
   "barUndo":            { "message": "Deshacer" },
   "barEdit":            { "message": "Editar" },

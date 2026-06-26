@@ -34,7 +34,7 @@
           <svg class="input-left-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="17" r="3"/><path d="M10.5 13.5 21 3"/><path d="M15 3h3v3"/></svg>
           <input type="password" id="api-key" class="input" data-i18n-placeholder="apiKeyPlaceholder" placeholder="sk-ant-api03-…" autocomplete="off">
           <button class="input-icon-btn" id="toggle-key" data-i18n-title="toggleKeyTitle" title="Mostrar/ocultar" tabindex="-1">
-            <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
         <p class="hint"><a href="https://console.anthropic.com" target="_blank" data-i18n="apiKeyHint">Obtenha em console.anthropic.com · ~$0.001/campo</a></p>
@@ -67,26 +67,26 @@
       <div class="card">
         <div class="card-label-row">
           <div class="card-label" data-i18n="instLabel">Instruções adicionais</div>
-          <span class="badge">.md</span>
+          <button id="inst-md-btn" class="inst-md-btn" data-i18n="instMdBtn">importar .md</button>
         </div>
-        <div class="drop-zone" id="inst-drop">
-          <div id="inst-empty" class="drop-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <span class="drop-title" data-i18n="dropTitle">Arraste ou clique para selecionar</span>
-            <span class="drop-sub" data-i18n="dropSubInst">Arquivo Markdown</span>
+        <div id="inst-loaded" class="inst-loaded" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg>
+          <div class="drop-loaded-info">
+            <span id="inst-filename" class="drop-filename"></span>
+            <span id="inst-status" class="drop-meta"></span>
           </div>
-          <div id="inst-loaded" class="drop-loaded" hidden>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg>
-            <div class="drop-loaded-info">
-              <span id="inst-filename" class="drop-filename"></span>
-              <span id="inst-status" class="drop-meta"></span>
-            </div>
-            <button class="drop-clear" id="inst-clear" data-i18n-title="removeTitle" title="Remover">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-          </div>
+          <button class="drop-clear" id="inst-clear" data-i18n-title="removeTitle" title="Remover">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
         </div>
+        <textarea id="inst-textarea" class="inst-textarea" data-i18n-placeholder="instPlaceholder" placeholder="Ex: prefiro respostas em inglês…" rows="3"></textarea>
         <input type="file" id="inst-file-input" accept=".md,text/markdown" hidden>
+      </div>
+
+      <!-- History -->
+      <div class="card" id="history-card" hidden>
+        <div class="card-label" data-i18n="historyLabel">Histórico de candidaturas</div>
+        <div id="history-list" class="history-list"></div>
       </div>
 
     </div>
