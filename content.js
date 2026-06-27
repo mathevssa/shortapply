@@ -12,22 +12,10 @@ const t = (key, ...args) => {
   return args.reduce((s, a, i) => s.replace(`{${i}}`, a), msg);
 };
 
-const _localeReady = chrome.storage.local.get('lang')
-  .catch(() => ({}))
-  .then(({ lang }) => {
-    const locale = lang || normalizeLocale(chrome.i18n.getUILanguage());
-    return fetch(chrome.runtime.getURL(`_locales/${locale}/messages.json`))
-      .then(r => r.json())
-      .then(data => { _msgs = data; });
-  })
-  .catch(() =>
-    fetch(chrome.runtime.getURL('_locales/pt_BR/messages.json'))
-      .then(r => r.json())
-      .then(data => { _msgs = data; })
-      .catch(() => {})
-  );
-
 const IS_MAIN_FRAME = window.self === window.top;
+
+// chrome.i18n.getMessage() is already the fallback in t() — no fetch needed in content scripts
+const _localeReady = Promise.resolve();
 
 // ── Field validation ──────────────────────────────────
 let currentField = null;

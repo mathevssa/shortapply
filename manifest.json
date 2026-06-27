@@ -53,8 +53,7 @@
   "web_accessible_resources": [
     {
       "resources": ["lib/pdf.worker.min.js"],
-      "matches": ["<all_urls>"],
-      "use_dynamic_url": true
+      "matches": ["<all_urls>"]
     }
   ]
 }
