@@ -149,6 +149,7 @@ async function triggerFillAll() {
     if (!response) throw new Error(t('toastNoResponse'));
     if (response.error === 'not_configured') { showToast(t('toastConfigure')); return; }
     if (response.error) throw new Error(response.error);
+    if (!Array.isArray(response.results)) throw new Error('invalid_response');
 
     let filled = 0;
     const skipped = [];
@@ -175,7 +176,7 @@ async function triggerFillAll() {
 
     showBulkConfirmBar(filled, skipped, details, () => {
       for (const { el, original } of snapshots) insertText(el, original);
-    });
+    }, response.provider);
 
     if (skipped.length) {
       setTimeout(() => showToast(t('toastSkipped', skipped.join(', ')), 8000), 300);
@@ -235,6 +236,7 @@ async function triggerFill(el) {
     if (!response) throw new Error(t('toastNoResponse'));
     if (response.error === 'not_configured') { showToast(t('toastConfigure')); return; }
     if (response.error) throw new Error(response.error);
+    if (typeof response.text !== 'string') throw new Error('invalid_response');
 
     insertText(el, response.text);
 
@@ -246,7 +248,7 @@ async function triggerFill(el) {
         })()
       : response.text;
 
-    showConfirmBar(fieldContext, originalValue, el, displayText);
+    showConfirmBar(fieldContext, originalValue, el, displayText, response.provider);
 
   } catch (err) {
     const errMsg = err.message.includes('context') || err.message.includes('Extension')
@@ -259,7 +261,7 @@ async function triggerFill(el) {
 }
 
 // ── Confirm bar (single field) ────────────────────────
-function showConfirmBar(fieldContext, originalValue, targetEl, displayText) {
+function showConfirmBar(fieldContext, originalValue, targetEl, displayText, provider = 'anthropic') {
   document.querySelector('.jaa-confirm-bar')?.remove();
 
   const bar = document.createElement('div');
@@ -269,6 +271,7 @@ function showConfirmBar(fieldContext, originalValue, targetEl, displayText) {
     ? `${fieldContext.label}: ${displayText}`
     : fieldContext.label;
   const truncated = label.length > 70 ? label.slice(0, 70) + '…' : label;
+  const providerLabel = provider === 'deepseek' ? 'DeepSeek' : 'Anthropic';
 
   bar.innerHTML = `
     <div class="jaa-confirm-info">
@@ -276,6 +279,7 @@ function showConfirmBar(fieldContext, originalValue, targetEl, displayText) {
       <span class="jaa-confirm-label">${escHtml(truncated)}</span>
     </div>
     <div class="jaa-confirm-actions">
+      <span class="jaa-provider-badge">${escHtml(providerLabel)}</span>
       <button class="jaa-cbar-btn jaa-cbar-edit">${t('barEdit')}</button>
       <button class="jaa-cbar-btn jaa-cbar-undo">${t('barUndo')}</button>
     </div>
@@ -294,7 +298,7 @@ function showConfirmBar(fieldContext, originalValue, targetEl, displayText) {
 }
 
 // ── Confirm bar (bulk fill) ───────────────────────────
-function showBulkConfirmBar(filled, skipped, details, undoFn) {
+function showBulkConfirmBar(filled, skipped, details, undoFn, provider = 'anthropic') {
   document.querySelector('.jaa-confirm-bar')?.remove();
 
   const bar = document.createElement('div');
@@ -303,6 +307,7 @@ function showBulkConfirmBar(filled, skipped, details, undoFn) {
   const summary = skipped.length
     ? t('barFilledSkipped', filled, skipped.length)
     : t('barFilledOnly', filled);
+  const providerLabel = provider === 'deepseek' ? 'DeepSeek' : 'Anthropic';
 
   const detailRows = details.map(d =>
     `<div class="jaa-cbar-detail-row">
@@ -319,6 +324,7 @@ function showBulkConfirmBar(filled, skipped, details, undoFn) {
         ${details.length ? `<button class="jaa-cbar-toggle">${t('barSeeDetails')}</button>` : ''}
       </div>
       <div class="jaa-confirm-actions">
+        <span class="jaa-provider-badge">${escHtml(providerLabel)}</span>
         <button class="jaa-cbar-btn jaa-cbar-undo">${t('barUndoAll')}</button>
       </div>
     </div>
@@ -392,6 +398,8 @@ function openEditModal(fieldContext, targetEl) {
 
 // ── Text insertion ────────────────────────────────────
 function insertText(el, text, flash = false) {
+  text = sanitizeForInsert(text);
+  if (!text && text !== '') return;
   if (flash) {
     el.classList.add('jaa-filled-flash');
     setTimeout(() => el.classList.remove('jaa-filled-flash'), 1000);
@@ -435,3 +443,14 @@ function showToast(msg, duration = 4000) {
 
 const _esc = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'};
 function escHtml(s) { return String(s).replace(/[&<>"']/g, c => _esc[c]); }
+
+const MAX_INSERT_LEN = 5000;
+function sanitizeForInsert(text) {
+  if (typeof text !== 'string') return '';
+  return text
+    .replace(/<[^>]*>/g, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+\s*=/gi, '')
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+    .slice(0, MAX_INSERT_LEN);
+}

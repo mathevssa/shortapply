@@ -2,9 +2,10 @@
   "extDescription":     { "message": "Completa solicitudes de empleo con IA — más rápido." },
   "headerSub":          { "message": "Completa solicitudes de empleo con IA" },
 
-  "apiKeyLabel":        { "message": "Clave de API de Anthropic" },
-  "apiKeyHint":         { "message": "Obtén en console.anthropic.com · ~$0.001/campo" },
-  "apiKeyPlaceholder":  { "message": "sk-ant-api03-…" },
+  "apiKeyLabel":        { "message": "Clave de API" },
+  "apiKeyHintAnthropic":{ "message": "Obtén en console.anthropic.com · ~$0.001/campo" },
+  "apiKeyHintDeepseek": { "message": "Obtén en platform.deepseek.com · ~$0.0001/campo" },
+  "apiKeyPlaceholder":  { "message": "sk-…" },
   "toggleKeyTitle":     { "message": "Mostrar/ocultar" },
   "apiStatusOk":        { "message": "Configurada" },
   "apiStatusMissing":   { "message": "No configurada" },

@@ -25,19 +25,23 @@
       <!-- API Key -->
       <div class="card">
         <div class="card-label-row">
-          <div class="card-label" data-i18n="apiKeyLabel">Chave da API Anthropic</div>
+          <div class="card-label" data-i18n="apiKeyLabel">Chave da API</div>
           <div id="api-pill" class="status-pill missing">
             <span class="pill-dot"></span><span id="api-pill-text" data-i18n="apiStatusMissing">Não configurada</span>
           </div>
         </div>
+        <select id="api-provider" class="provider-select">
+          <option value="anthropic">Anthropic</option>
+          <option value="deepseek">DeepSeek</option>
+        </select>
         <div class="input-wrap">
           <svg class="input-left-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="17" r="3"/><path d="M10.5 13.5 21 3"/><path d="M15 3h3v3"/></svg>
-          <input type="password" id="api-key" class="input" data-i18n-placeholder="apiKeyPlaceholder" placeholder="sk-ant-api03-…" autocomplete="off">
+          <input type="password" id="api-key" class="input" data-i18n-placeholder="apiKeyPlaceholder" placeholder="sk-…" autocomplete="off">
           <button class="input-icon-btn" id="toggle-key" data-i18n-title="toggleKeyTitle" title="Mostrar/ocultar" tabindex="-1">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
-        <p class="hint"><a href="https://console.anthropic.com" target="_blank" data-i18n="apiKeyHint">Obtenha em console.anthropic.com · ~$0.001/campo</a></p>
+        <p class="hint"><a href="#" id="api-link" target="_blank" data-i18n="apiKeyHint">Obtenha em console.anthropic.com · ~$0.001/campo</a></p>
       </div>
 
       <!-- CV -->

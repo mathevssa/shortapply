@@ -51,6 +51,40 @@ let instFileName = '';
 
 let spIsDefault = true;
 
+let currentProvider = 'anthropic';
+let apiKeys = { anthropic: '', deepseek: '' };
+
+const PROVIDER_CONFIG = {
+  anthropic: {
+    placeholder: 'sk-ant-api03-…',
+    link: 'https://console.anthropic.com',
+    hintKey: 'apiKeyHintAnthropic',
+    hintFallback: 'Obtenha em console.anthropic.com · ~$0.001/campo',
+  },
+  deepseek: {
+    placeholder: 'sk-…',
+    link: 'https://platform.deepseek.com',
+    hintKey: 'apiKeyHintDeepseek',
+    hintFallback: 'Obtenha em platform.deepseek.com · ~$0.0001/campo',
+  },
+};
+
+function updateProviderUI(provider) {
+  const config = PROVIDER_CONFIG[provider] || PROVIDER_CONFIG.anthropic;
+  const input = document.getElementById('api-key');
+  const link = document.getElementById('api-link');
+  
+  input.placeholder = config.placeholder;
+  link.href = config.link;
+  link.textContent = t(config.hintKey) || config.hintFallback;
+}
+
+function updateApiKeyDisplay() {
+  const input = document.getElementById('api-key');
+  input.value = apiKeys[currentProvider] || '';
+  setApiPill((apiKeys[currentProvider] || '').trim().length > 0);
+}
+
 // ── API status pill ───────────────────────────────────
 function setApiPill(ok) {
   const pill = document.getElementById('api-pill');
@@ -104,12 +138,23 @@ document.getElementById('sp-reset-btn').addEventListener('click', () => {
 
 // ── Load saved state ──────────────────────────────────
 async function loadSaved() {
-  const data = await chrome.storage.local.get(['apiKey', 'cvText', 'cvFileName', 'extraInstructions', 'instFileName', 'systemPrompt']);
+  const data = await chrome.storage.local.get(['apiKey', 'apiKey_anthropic', 'apiKey_deepseek', 'cvText', 'cvFileName', 'extraInstructions', 'instFileName', 'systemPrompt', 'apiProvider']);
 
-  if (data.apiKey) {
-    document.getElementById('api-key').value = data.apiKey;
-    setApiPill(true);
+  const provider = data.apiProvider || 'anthropic';
+  currentProvider = provider;
+  const providerSelect = document.getElementById('api-provider');
+  providerSelect.value = provider;
+  updateProviderUI(provider);
+
+  if (data.apiKey_anthropic) apiKeys.anthropic = data.apiKey_anthropic;
+  if (data.apiKey_deepseek) apiKeys.deepseek = data.apiKey_deepseek;
+  
+  if (data.apiKey && !apiKeys.anthropic && !apiKeys.deepseek) {
+    apiKeys[provider] = data.apiKey;
   }
+
+  updateApiKeyDisplay();
+
   if (data.cvText) {
     cvText = data.cvText;
     cvFileName = data.cvFileName || t('cvLoadedFallback');
@@ -139,7 +184,22 @@ document.getElementById('toggle-key').addEventListener('click', () => {
 });
 
 document.getElementById('api-key').addEventListener('input', (e) => {
+  apiKeys[currentProvider] = e.target.value;
   setApiPill(e.target.value.trim().length > 0);
+});
+
+// ── API provider ──────────────────────────────────────
+document.getElementById('api-provider').addEventListener('change', async (e) => {
+  const newProvider = e.target.value;
+  
+  const currentKey = document.getElementById('api-key').value.trim();
+  apiKeys[currentProvider] = currentKey;
+  
+  currentProvider = newProvider;
+  updateProviderUI(newProvider);
+  updateApiKeyDisplay();
+  
+  await chrome.storage.local.set({ apiProvider: newProvider });
 });
 
 // ── Language toggle ───────────────────────────────────
@@ -152,6 +212,7 @@ document.getElementById('lang-toggle').addEventListener('click', async (e) => {
   setActiveLangBtn(locale);
   applyI18n();
   setApiPill(document.getElementById('api-key').value.trim().length > 0);
+  updateProviderUI(document.getElementById('api-provider').value);
   if (spIsDefault) {
     spTextarea.value = t('systemPromptDefault');
     spTextarea.dispatchEvent(new Event('input'));
@@ -269,12 +330,18 @@ async function loadHistory() {
 
 // ── Save ──────────────────────────────────────────────
 document.getElementById('save-btn').addEventListener('click', async () => {
-  const apiKey            = document.getElementById('api-key').value.trim();
+  const currentKey = document.getElementById('api-key').value.trim();
+  apiKeys[currentProvider] = currentKey;
+  
+  const apiProvider       = document.getElementById('api-provider').value;
   const extraInstructions = instTextarea.value.trim() || null;
   const systemPrompt      = spTextarea.value.trim();
 
   const toSave = {
-    apiKey,
+    apiKey_anthropic: apiKeys.anthropic || '',
+    apiKey_deepseek: apiKeys.deepseek || '',
+    apiKey: apiKeys[apiProvider] || '',
+    apiProvider,
     extraInstructions: extraInstructions || null,
     instFileName: instFileName || null,
     systemPrompt: spIsDefault ? null : (systemPrompt || null),
@@ -282,7 +349,7 @@ document.getElementById('save-btn').addEventListener('click', async () => {
   if (cvText) { toSave.cvText = cvText; toSave.cvFileName = cvFileName; }
 
   await chrome.storage.local.set(toSave);
-  setApiPill(!!apiKey);
+  setApiPill(!!currentKey);
 
   const msg = document.getElementById('save-msg');
   msg.textContent = t('savedMsg');

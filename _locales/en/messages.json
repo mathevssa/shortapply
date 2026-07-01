@@ -2,9 +2,10 @@
   "extDescription":     { "message": "Fill job applications with AI — faster." },
   "headerSub":          { "message": "Fill applications with AI" },
 
-  "apiKeyLabel":        { "message": "Anthropic API Key" },
-  "apiKeyHint":         { "message": "Get it at console.anthropic.com · ~$0.001/field" },
-  "apiKeyPlaceholder":  { "message": "sk-ant-api03-…" },
+  "apiKeyLabel":        { "message": "API Key" },
+  "apiKeyHintAnthropic":{ "message": "Get it at console.anthropic.com · ~$0.001/field" },
+  "apiKeyHintDeepseek": { "message": "Get it at platform.deepseek.com · ~$0.0001/field" },
+  "apiKeyPlaceholder":  { "message": "sk-…" },
   "toggleKeyTitle":     { "message": "Show/hide" },
   "apiStatusOk":        { "message": "Configured" },
   "apiStatusMissing":   { "message": "Not configured" },

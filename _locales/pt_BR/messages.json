@@ -2,9 +2,10 @@
   "extDescription":     { "message": "Preencha candidaturas com IA — mais rápido." },
   "headerSub":          { "message": "Preencha candidaturas com IA" },
 
-  "apiKeyLabel":        { "message": "Chave da API Anthropic" },
-  "apiKeyHint":         { "message": "Obtenha em console.anthropic.com · ~$0.001/campo" },
-  "apiKeyPlaceholder":  { "message": "sk-ant-api03-…" },
+  "apiKeyLabel":        { "message": "Chave da API" },
+  "apiKeyHintAnthropic":{ "message": "Obtenha em console.anthropic.com · ~$0.001/campo" },
+  "apiKeyHintDeepseek": { "message": "Obtenha em platform.deepseek.com · ~$0.0001/campo" },
+  "apiKeyPlaceholder":  { "message": "sk-…" },
   "toggleKeyTitle":     { "message": "Mostrar/ocultar" },
   "apiStatusOk":        { "message": "Configurada" },
   "apiStatusMissing":   { "message": "Não configurada" },
