@@ -83,7 +83,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
       const systemText = `${base}${lang && !lang.startsWith('pt') ? `\nRespond in the same language as the form (${lang}).` : ''}${extraInstructions ? '\n\nInstruções adicionais: ' + extraInstructions : ''}${INJECTION_GUARD}`;
       const userText = fieldContext.options
-        ? `Campo DROPDOWN: "${fieldContext.label}"\nContexto da página: ${fieldContext.pageContext}\n\nOpções:\n${fieldContext.options.map((o, i) => `${i + 1}. ${o}`).join('\n')}\n\nEscolha a opção que melhor representa o candidato. Responda SOMENTE com o número (ex: "3").`
+        ? `Campo DROPDOWN: "${fieldContext.label}"\nContexto da página: ${fieldContext.pageContext}\n\nOpções disponíveis:\n${fieldContext.options.map((o, i) => `${i + 1}. ${o}`).join('\n')}\n\nINSTRUÇÃO: Responda APENAS com o NÚMERO da opção que melhor representa o candidato (ex: "1", "2", "3"). NÃO inclua texto, explicações ou aspas.`
         : `Campo: "${fieldContext.label}"\nContexto da página: ${fieldContext.pageContext}\n\nResponda apenas o texto que deve ir no campo.`;
 
       let fetchPromise;
@@ -161,7 +161,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }).join('\n');
 
       const systemText = `${base}${lang && !lang.startsWith('pt') ? `\nRespond in the same language as the form (${lang}).` : ''}${extraInstructions ? '\n\nInstruções adicionais: ' + extraInstructions : ''}${INJECTION_GUARD}`;
-      const userText = `Preencha os campos abaixo.\n\nContexto da página: ${fields[0]?.pageContext || ''}\n\nCampos:\n${fieldList}\n\nResponda com um JSON array (sem markdown, sem explicação):\n[{"id":0,"answer":"texto"},{"id":1,"answer":"2"},{"id":2,"answer":null}]\n\nRegras:\n- Campos [texto]: string com a resposta\n- Campos [dropdown]: string com o número da opção (ex: "2")\n- Sem informação suficiente no CV: null`;
+      const userText = `Preencha os campos abaixo.\n\nContexto da página: ${fields[0]?.pageContext || ''}\n\nCampos:\n${fieldList}\n\nResponda com um JSON array (sem markdown, sem explicação):\n[{"id":0,"answer":"texto"},{"id":1,"answer":"2"},{"id":2,"answer":null}]\n\nRegras IMPORTANTES:\n- Campos [texto]: string com a resposta exata\n- Campos [dropdown]: string com APENAS o NÚMERO da opção (ex: "1", "2", "3")\n- Sem informação suficiente no CV: null\n- NÃO inclua texto extra, explicações ou aspas nas respostas`;
 
       let fetchPromise;
       if (provider === 'deepseek') {

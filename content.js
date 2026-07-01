@@ -406,10 +406,20 @@ function insertText(el, text, flash = false) {
   }
   if (el.tagName === 'SELECT') {
     const validOpts = Array.from(el.options).filter(o => o.value);
-    const num = parseInt(text.trim(), 10);
-    const opt = !isNaN(num) && num >= 1 && num <= validOpts.length
-      ? validOpts[num - 1]
-      : validOpts.find(o => o.text.trim().toLowerCase() === text.toLowerCase().trim());
+    const cleanedText = text.trim().replace(/["'`]/g, '').trim();
+    const num = parseInt(cleanedText, 10);
+    
+    let opt = null;
+    
+    if (!isNaN(num) && num >= 1 && num <= validOpts.length) {
+      opt = validOpts[num - 1];
+    } else {
+      const lowerText = cleanedText.toLowerCase();
+      opt = validOpts.find(o => o.text.trim().toLowerCase() === lowerText) ||
+            validOpts.find(o => o.text.trim().toLowerCase().includes(lowerText)) ||
+            validOpts.find(o => lowerText.includes(o.text.trim().toLowerCase()));
+    }
+    
     if (opt) {
       el.value = opt.value;
       el.dispatchEvent(new Event('change', { bubbles: true }));
